@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: agent-dgi
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    # Rendre React lisible à n'importe quelle URL (ex. /validations)
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://isras-preproduction-api.onrender.com/api
