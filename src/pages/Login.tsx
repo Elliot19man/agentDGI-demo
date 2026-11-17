@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { api } from "../api/client";
 import { obtenirJetonCaptcha } from "../api/captcha";
 import { useAuth } from "../context/AuthContext";
@@ -24,6 +24,7 @@ export default function Login() {
   const [etape, setEtape] = useState<"login" | "otp">("login");
   const [identifiant, setIdentifiant] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
+  const [voirMotDePasse, setVoirMotDePasse] = useState(false);
   const [code, setCode] = useState("");
   const [jetonOtp, setJetonOtp] = useState("");
   const [erreur, setErreur] = useState("");
@@ -127,15 +128,27 @@ export default function Login() {
                 onChange={(e) => setIdentifiant(e.target.value)}
                 required
               />
-              <input
-                className="champ"
-                type="password"
-                placeholder="Mot de passe"
-                autoComplete="current-password"
-                value={motDePasse}
-                onChange={(e) => setMotDePasse(e.target.value)}
-                required
-              />
+              <div className="champ-secret">
+                <input
+                  className="champ"
+                  type={voirMotDePasse ? "text" : "password"}
+                  placeholder="Mot de passe"
+                  autoComplete="current-password"
+                  value={motDePasse}
+                  onChange={(e) => setMotDePasse(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="bascule-mdp"
+                  aria-label={voirMotDePasse ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                  aria-pressed={voirMotDePasse}
+                  title={voirMotDePasse ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                  onClick={() => setVoirMotDePasse((v) => !v)}
+                >
+                  {voirMotDePasse ? <EyeOff size={17} /> : <Eye size={17} />}
+                </button>
+              </div>
             </>
           ) : (
             <input

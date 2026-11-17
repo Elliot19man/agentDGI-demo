@@ -70,6 +70,15 @@ body {
   border: 1px solid #E3E4E0; border-radius: 11px; font-size: 14px;
   background: #FBFBFA; font-family: inherit;
 }
+.champ-secret { position: relative; margin-bottom: 14px; }
+.champ-secret .champ { margin-bottom: 0; padding-right: 44px; }
+.bascule-mdp {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--discret); cursor: pointer;
+  padding: 5px; display: flex; border-radius: 8px; font-family: inherit;
+}
+.bascule-mdp:hover { color: var(--accent-fonce); background: #F0F0EC; }
+.bascule-mdp:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
 .champ:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
 
 .bouton {
