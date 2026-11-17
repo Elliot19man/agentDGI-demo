@@ -21,7 +21,7 @@ export function obtenirJetonCaptcha(): Promise<string> {
     }
     grecaptcha.ready(async () => {
       try {
-        const jeton = await grecaptcha.execute(CLE_SITE, { action: 'submit' });
+        const jeton = await grecaptcha.execute(CLE_SITE, { action: 'connexion' });
         resolve(jeton);
       } catch {
         resolve('');
