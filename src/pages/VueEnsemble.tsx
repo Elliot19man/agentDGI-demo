@@ -50,8 +50,10 @@ export default function VueEnsemble() {
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState("");
 
+  // Retourne la promesse pour que le minuteur d'actualisation sache quand
+  // l'appel est terminé (les tours sont sautés sinon).
   const charger = useCallback(() => {
-    api
+    return api
       .get("/agent/tableau-de-bord")
       .then(({ data }) => setTableau(data as TableauDeBord))
       .catch((err) =>

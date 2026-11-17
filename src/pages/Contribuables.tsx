@@ -49,14 +49,13 @@ export default function Contribuables() {
   const limite = 20;
 
   const charger = useCallback(async () => {
-    setChargement(true);
-    setErreur("");
     try {
       const params = new URLSearchParams({ page: String(page), limite: String(limite) });
       if (termes) params.set("recherche", termes);
       const { data } = await api.get(`/agent/contribuables?${params.toString()}`);
       setLignes(data.contribuables ?? []);
       setTotal(data.total ?? 0);
+      setErreur("");
     } catch (err: any) {
       setErreur(err.response?.data?.message || "Erreur de chargement");
     } finally {

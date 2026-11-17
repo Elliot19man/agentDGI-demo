@@ -51,8 +51,6 @@ export default function Validations() {
   const [erreur, setErreur] = useState("");
 
   const charger = useCallback(async () => {
-    setChargement(true);
-    setErreur("");
     try {
       const [reponseAvis, reponseQuittances] = await Promise.all([
         api.get("/paiements/en-attente-avis"),
@@ -60,6 +58,7 @@ export default function Validations() {
       ]);
       setAvis(reponseAvis.data?.paiements ?? []);
       setQuittances(reponseQuittances.data?.quittances ?? []);
+      setErreur("");
     } catch (err: any) {
       setErreur(err.response?.data?.message || "Erreur de chargement");
     } finally {

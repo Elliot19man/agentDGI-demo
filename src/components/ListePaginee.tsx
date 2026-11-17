@@ -35,9 +35,9 @@ export default function ListePaginee<T extends { id: number }>({
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState("");
 
+  // Silencieux après le premier chargement : les données suivent l'agent
+  // sans que le tableau s'efface toutes les 2 s.
   const charger = useCallback(async () => {
-    setChargement(true);
-    setErreur("");
     try {
       const chemin =
         typeof endpoint === "function"
@@ -46,6 +46,7 @@ export default function ListePaginee<T extends { id: number }>({
       const { data } = await api.get(chemin);
       setLignes((data[champListe] ?? []) as T[]);
       setTotal(data.total ?? 0);
+      setErreur("");
     } catch (err: any) {
       setErreur(err.response?.data?.message || "Erreur de chargement");
     } finally {
