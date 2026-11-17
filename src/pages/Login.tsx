@@ -5,6 +5,21 @@ import { api } from "../api/client";
 import { obtenirJetonCaptcha } from "../api/captcha";
 import { useAuth } from "../context/AuthContext";
 
+/**
+ * Erreurs réseau (CORS bloqué, API injoignable, timeout) ne portent pas de
+ * réponse : le message de repli technique « Identifiants incorrects » serait
+ * trompeur. On distingue donc les deux cas pour que l'agent sache quoi faire.
+ */
+function messageErreur(err: any, repli: string): string {
+  if (err?.response) {
+    return err.response.data?.message || repli;
+  }
+  if (err?.code === "ECONNABORTED") {
+    return "Le serveur met trop de temps à répondre. Réessayez dans un instant.";
+  }
+  return "Le serveur est injoignable. Vérifiez la connexion, ou réessayez dans un instant.";
+}
+
 export default function Login() {
   const [etape, setEtape] = useState<"login" | "otp">("login");
   const [identifiant, setIdentifiant] = useState("");
@@ -40,7 +55,7 @@ export default function Login() {
       setJetonOtp(data.jeton);
       setEtape("otp");
     } catch (err: any) {
-      setErreur(err.response?.data?.message || "Identifiants incorrects.");
+      setErreur(messageErreur(err, "Identifiants incorrects."));
     } finally {
       setChargement(false);
     }
@@ -62,7 +77,7 @@ export default function Login() {
       connecter(data.utilisateur, data.accessToken);
       navigate("/");
     } catch (err: any) {
-      setErreur(err.response?.data?.message || "Code invalide ou expiré.");
+      setErreur(messageErreur(err, "Code invalide ou expiré."));
     } finally {
       setChargement(false);
     }
