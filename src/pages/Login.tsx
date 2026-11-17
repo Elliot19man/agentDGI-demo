@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { api } from "../api/client";
-import { obtenirJetonCaptcha } from "../api/captcha";
 import { useAuth } from "../context/AuthContext";
 
 /**
@@ -38,11 +37,9 @@ export default function Login() {
     setErreur("");
     setChargement(true);
     try {
-      const recaptchaToken = await obtenirJetonCaptcha();
       const { data } = await api.post("/auth/connexion", {
         identifiant,
         motDePasse,
-        recaptchaToken,
       });
       if (data.etape === "AUTHENTIFIE") {
         if (data.utilisateur.role !== "AGENT_DGI") {
